@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="08d34b2d135c1cc96ab506fd8bf6916d1e2f391a">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-panorama-8.4.0_ddbcfc147740a9e3498c32922ea20da9f2c9550b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="e167a34eaca0b31704212f43f9576ea84e05046f">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wearable-8.4.0_f9db1cba407e7a369d338737ada720472b873708\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_5682dd63aa2caac22aa73a10f397c5f4bbe4c5aa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-8.4.0_34ef07a830631fb427d8c39c7edb819bb0c6e98d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="a8412b654dab86d57bf90683367488211c8a81f1">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-location-8.4.0_4d7e9db523f12b62dd00f6a95fa4060e79a26eba\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appinvite\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="9fe026fb4c7fce21bc5142f6e1bdf844f28061ac">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appinvite-8.4.0_3b57625781410ef540419dcbcfdb7aca6377847f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="03d38bb042efe3e5ce27ba66b729a9523c36d8fe">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.0.0_30de9025c2a5c35226696de796e430754f32c692\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="04de44f90606c77f3b28cf44861f306290505aac">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-maps-8.4.0_9c4dfd6a61f9598de80b588bdce26630707899bf\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="b5e7892fb0708e792e0e933c4c0a0ca0ac7831fb">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-ads-8.4.0_e9607e7ba35f7d108bcd74c502297555dc592e61\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-nearby\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="9cad249cf62751a323d9af568caf12284b7d6062">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-nearby-8.4.0_3b99972797101ff66cc1e42808b82c58de56036f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="6c7d8c5f186d4ace8e1155f933734259534d4bca">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_ff3dc24a571ca9924ab118c3356d3241a9f2e090\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.4\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="4b1a7fac58cc85b115adee653a10b6300f90951a">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.maps.android-android-maps-utils-0.4_e182920886c97437529fbc0f9ddf8254e39e0bed\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\libs\org.apache.http.legacy.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="017030d11901291abf8f83a812984276b643ea0f">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\2\org.apache.http.legacy_df5719223a7b3af08539a1dfcfe638049f94f659\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="1c9f35e952b212c843f7bd2c7eec8e82ad95602e">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-analytics-8.4.0_5c6b7b02ae8464e6cffca59ff39ba081e5d00adc\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c54246475c1bb64ac6857d1320364bfbfeda2c46">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-fitness-8.4.0_9b6608e579705f31370b287ba365bb3a70c4ea89\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3a364cc6b698d1b3b2d284f64618daaa7fe77ddf">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-games-8.4.0_b0f1835a92ce16108c9c15b225320c9ec62c4e4d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-cast\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="551e78f21acf69ebfb489c0e79647824c838013e">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-cast-8.4.0_3bf59b2832a2c348b637eaa8a5e8b4327a0d6a6e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appindexing-8.4.0_55e29c02156120c48654d773a032b9d6336c5042\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-auth\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="966e5771a5a2ebfb31bf00d7cd6cd2546d245517">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-auth-8.4.0_bfcdd32bcfd6dc966c75ebb4c5c30be9dd4c7125\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\23.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d358b3dd49a7c67844622dcbc9cf4339e13952ce">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-mediarouter-v7-23.0.0_304c0eec1fcbec9e93c4bbee0ba5d1fc994bc1d2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-drive\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="b36f30ac5ee5d5214f4b1e2ac49f11889d58e71a">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-drive-8.4.0_b0da68c5a3bbf4ff79173c12e85ea30ab777408c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_1863b407673f6250e07208d39fd7223c6561c2a7\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-plus\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="1a78298e7724d5440d210bcb946b3493250d354d">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-plus-8.4.0_fbf9ab754c1b84ba90a82514d5384a22724b6702\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_68c97b53c3b8a734c3ec7c64b06e1a71f8525703\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\libs\internal_impl-23.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_17b95853bbb64b7c25a1f55f067ea4065c3d7b7a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="2d7fe76982677315c4dc4edfb459c8ca718a9d4c">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-gcm-8.4.0_9f391e51566bff958821b98edfa661d9f8914b6b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f2df436a8f02ce7e4d7d209671fc45f97c470f0e">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wallet-8.4.0_2a23a44b115369cb2f315fe3ddfea2125ad1c5ec\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-measurement\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="613298b7aa012f121ce542881c0a599ebd8078f2">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-measurement-8.4.0_ddfef009bfffc091f4a2653a71320d2585d63c28\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_6e04f564dd69d3d1c439a4f9aa93b1b8e7e5b7b6\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_7e25c1056e49db75028b26bb090a6171336cbfa7\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-vision\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="dfecc4d835cdabcdecf7e95f0d20a3ef1e9d8ef4">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-vision-8.4.0_922d26fb65b4a1bac910f773f9cf1864396bf0d5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.1_cd720ac4c250a50441408b780b0d072c38d7f40f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-identity\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="b82b8e847173c28efffcd291b2a0b1ae9ad17fa4">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-identity-8.4.0_c6340f6dc10ab33c1aed43147e67195c538c6bf4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.2.1_124a61cc0b14f6ca643fe509d8609c97583ff892\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\SDK\extras\android\m2repository\com\android\support\support-annotations\23.2.1\support-annotations-23.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.1_6a339cf3877f671c980e63e3897fda1dd0ef1ec5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="0194a7409c40de94fb539d4ad9928ec5d47afeb7">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-safetynet-8.4.0_37e10391ec1bd7d13d6cacc061c05fd289023442\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\LBSEE_SBU\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8b6b884be040b77fed66008063156244e2b38e83">
+        <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_b7f7bc21026079e22608c0962ddd58f97fe3150f\classes.dex" />
+    </item>
+
+</items>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/textColorHighlight">
+
+    <group android:checkableBehavior="single">
+
+   <item
+            android:id="@+id/home"
+            android:title="Home" />
+
+        <item android:title="Services">
+            <menu>
+
+    <item
+            android:id="@+id/atm"
+            android:title="ATM" />
+    <item
+        android:id="@+id/bank"
+        android:title="BANKS"/>
+
+
+                <item
+                    android:id="@+id/post"
+                    android:title="POST OFFICE"/>
+            </menu>
+
+        </item>
+
+        <item android:title="Emergency">
+
+        <menu>
+
+    <item
+        android:id="@+id/fire"
+        android:title="FIRE STATION"/>
+    <item
+        android:id="@+id/hospitals"
+        android:title="HOSPITALS"/>
+    <item
+        android:id="@+id/police"
+        android:title="POLICE STATION"/>
+            </menu>
+</item>
+
+        <item android:title="Education">
+
+            <menu>
+
+    <item
+        android:id="@+id/college"
+        android:title="COLLEGE"/>
+
+    <item
+        android:id="@+id/school"
+        android:title="SCHOOLS"/>
+        </menu>
+        </item>
+
+        <item android:title="Enternainment">
+            <menu>
+
+        <item
+            android:id="@+id/theater"
+            android:title="THEATERS"></item>
+
+            </menu>
+
+        </item>
+
+        <item android:title="About LBSEE"
+            android:id="@+id/about"/>
+    </group>
+
+</menu>
