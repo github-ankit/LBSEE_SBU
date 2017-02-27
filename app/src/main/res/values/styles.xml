@@ -6,6 +6,7 @@
         <item name="colorPrimary">#673AB7</item>
         <item name="colorPrimaryDark">#512DA8</item>
         <item name="colorAccent">#00BCD4</item>
+       <!-- <item name="android:textColorPrimary">@color/common_google_signin_btn_text_dark_focused</item>-->
     </style>
 
     <style name="AppTheme.NoActionBar">

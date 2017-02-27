@@ -97,7 +97,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.1"
-        sha1="6c7d8c5f186d4ace8e1155f933734259534d4bca">
+        sha1="dc4b6fcb60b52e0d96c0aca35940cbec5e1cecc0">
         <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_ff3dc24a571ca9924ab118c3356d3241a9f2e090\classes.dex" />
     </item>
     <item
@@ -331,7 +331,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.1"
-        sha1="8b6b884be040b77fed66008063156244e2b38e83">
+        sha1="387be902f2a234076114de53327649e7eefd96cf">
         <dex dex="E:\LBSEE_SBU\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_b7f7bc21026079e22608c0962ddd58f97fe3150f\classes.dex" />
     </item>
 

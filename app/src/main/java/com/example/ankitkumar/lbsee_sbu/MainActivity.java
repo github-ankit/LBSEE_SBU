@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity implements
             drawer.setDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+            /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);*/
 
 
             // Getting reference to SupportMapFragment of the activity_main
@@ -239,6 +239,9 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         mMap.setMyLocationEnabled(true);
+
+
+
 
 
         // Setting onclick event listener for the map
@@ -436,8 +439,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        LatLng myPoint=new LatLng(mylat, mylong);
-
         int id = item.getItemId();
         String st= (String) item.getTitle();
 
@@ -474,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements
 
         }
 
-        String url="http://chennaiessentials.co.in/getMarkers.php?lat="+myPoint.latitude+"&long="+myPoint.longitude;
+        String url="http://chennaiessentials.co.in/getMarkers.php?lat="+mylat+"&long="+mylong;
         if (id == R.id.atm) {
             //Request data
             typeSelected = "atm";
@@ -672,43 +673,44 @@ public class MainActivity extends AppCompatActivity implements
 
         clearMap();
 
+        String url="http://chennaiessentials.co.in/getMarkers.php?lat="+mylat+"&long="+mylong;
         switch (location) {
             case "atm":
                 //Request data
                 typeSelected = "atm";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=atm");
+                new JSONTask().execute(url+"&q=atm");
                 break;
             case "bank":
                 typeSelected = "banks";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=banks");
+                new JSONTask().execute(url+"&q=banks");
                 break;
             case "fire":
                 typeSelected = "fire";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=fire");
+                new JSONTask().execute(url+"&q=fire");
                 break;
             case "hospitals":
                 typeSelected = "hospital";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=hospital");
+                new JSONTask().execute(url+"&q=hospital");
                 break;
             case "police":
                 typeSelected = "police";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=police");
+                new JSONTask().execute(url+"&q=police");
                 break;
             case "post":
                 typeSelected = "postoffice";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=postoffice");
+                new JSONTask().execute(url+"&q=postoffice");
                 break;
             case "college":
                 typeSelected = "colleges";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=colleges");
+                new JSONTask().execute(url+"&q=colleges");
                 break;
             case "school":
                 typeSelected = "schools";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=schools");
+                new JSONTask().execute(url+"&q=schools");
                 break;
             case "theater":
                 typeSelected = "theater";
-                new JSONTask().execute("http://chennaiessentials.co.in/getMarkers.php?q=theater");
+                new JSONTask().execute(url+"&q=theater");
                 break;
             default:
             {
@@ -1049,7 +1051,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
             //spinner.setVisibility(View.GONE);
-            progressBar.dismiss();
+           // progressBar.dismiss();
 
         }
     }
