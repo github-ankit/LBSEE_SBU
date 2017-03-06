@@ -9,6 +9,8 @@
     android:orientation="vertical"
     android:weightSum="1">
 
+
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="38dp"
@@ -28,24 +30,52 @@
             android:id="@+id/button1"
             />
 
-            <EditText
+            <!--<EditText
                 android:layout_width="260dp"
                 android:layout_height="match_parent"
                 android:textSize="16sp"
                 android:id="@+id/TFaddress"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:inputType="text"
+                android:hint="Enter search query"
+                android:singleLine="true" />-->
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@android:style/TextAppearance.Holo.Small"
+                android:id="@+id/TFaddress"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:minWidth="260dp"
+                app:hintAnimationEnabled="false"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:hint="Enter Search Query"
+                    android:imeOptions="actionSearch" />
+
+            </android.support.design.widget.TextInputLayout>
+
 
             <ImageButton
-                android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/button"
                 android:src="@drawable/search"
                 android:onClick="onSearch1"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_weight="1"/>
+                android:layout_alignParentBottom="false"
+                android:layout_weight="1"
+                android:maxWidth="35dp"
+                android:layout_width="wrap_content"
+                android:layout_alignParentTop="true" />
         </TableRow></TableLayout>
+
 
    <TableLayout android:layout_height="505dp"
        android:layout_width="match_parent">

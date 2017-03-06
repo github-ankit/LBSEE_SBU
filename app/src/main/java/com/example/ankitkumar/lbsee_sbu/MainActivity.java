@@ -1,6 +1,7 @@
 package com.example.ankitkumar.lbsee_sbu;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,13 +19,15 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -45,6 +47,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,6 +56,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,7 +67,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -80,9 +87,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Time;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -94,8 +107,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int REQUEST_OK = 1;
 
     private GoogleApiClient client;
-    double latitude = 0;
-    double longitude = 0;
     private ProgressBar spinner;
     boolean markersLoaded = false;
     Location mLastLocation;
@@ -104,6 +115,21 @@ public class MainActivity extends AppCompatActivity implements
     String typeSelected = "";
     private ProgressDialog progressBar;
     private int progressBarStatus = 0;
+    Time mLastUpdateTime;
+    public AddressResultReceiver mResultReceiver;
+    Polyline mapPolyLine = null;
+
+    private Marker myMarker;
+
+    String addressText = "";
+    String address;
+
+
+
+
+    EditText location_tf;
+
+    TextView distdur;
 
     MarkerOptions currPos = null;
 
@@ -113,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements
     private MarkerManager.Collection mc;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -120,33 +149,56 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextInputLayout ttf = (TextInputLayout) findViewById(R.id.TFaddress);
+        location_tf = ttf.getEditText();
+
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
 
         if (client == null) {
+            // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
             client = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
+                    .addApi(AppIndex.API).build();
         }
+
+
         if (client != null) {
             client.connect();
         }
 
-        if (status != ConnectionResult.SUCCESS) { // Google Play Services are not available
+        if (status != ConnectionResult.SUCCESS) {
 
             int requestCode = 10;
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this, requestCode);
             dialog.show();
 
-        } else { // Google Play Services are available
+        } else {
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    client);
+
 
             findViewById(R.id.button1).setOnClickListener(this);//voice button
+            distdur = location_tf;
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -165,8 +217,8 @@ public class MainActivity extends AppCompatActivity implements
             drawer.setDrawerListener(toggle);
             toggle.syncState();
 
-            /*NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);*/
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
 
 
             // Getting reference to SupportMapFragment of the activity_main
@@ -174,6 +226,8 @@ public class MainActivity extends AppCompatActivity implements
                     .findFragmentById(R.id.map);
 
             fm.getMapAsync(this);
+
+
 
 
             // Initializing
@@ -185,12 +239,66 @@ public class MainActivity extends AppCompatActivity implements
             spinner.setVisibility(View.GONE);
 
 
-        }
 
+
+        }
 
     }
 
-    @Override
+    protected void startIntentService() {
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra(FetchAddressIntentService.Constants.RECEIVER, (Parcelable) mResultReceiver);
+        intent.putExtra(FetchAddressIntentService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        startService(intent);
+    }
+
+
+
+
+    private class ReverseGeocodingTask extends AsyncTask<Double, Void, String> {
+        Context mContext;
+
+        public ReverseGeocodingTask(Context context) {
+            super();
+            mContext = context;
+        }
+
+        @Override
+        protected String doInBackground(Double... params) {
+            Geocoder geocoder = new Geocoder(mContext);
+            double latitude = params[0].doubleValue();
+            double longitude = params[1].doubleValue();
+
+            List<Address> addresses = null;
+
+
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (addresses != null && addresses.size() > 0) {
+                Address address = addresses.get(0);
+
+                addressText = String.format("%s, %s, %s",
+                        address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
+                        address.getLocality(),
+                        address.getCountryName());
+            }
+
+            return addressText;
+        }
+
+        @Override
+        protected void onPostExecute(String addressText) {
+            // Setting address of the touched Position
+            location_tf.setText(addressText);
+        }
+    }
+
+
+        @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
@@ -199,32 +307,15 @@ public class MainActivity extends AppCompatActivity implements
         uiSettings.setCompassEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setAllGesturesEnabled(true);
+        uiSettings.setMapToolbarEnabled(true);
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(client,
                         builder.build());
-        /*//Clustering
-        ClusterManager<MyItem> mClusterManager = new ClusterManager<MyItem>(MainActivity.this, mMap);
-        mMap.setOnCameraChangeListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        mClusterManager.setRenderer(new OwnRendring(getApplicationContext(), mMap, mClusterManager));*/
 
 
-        /*try {
-
-
-            MarkerOptions mp = new MarkerOptions();
-            mp.position(new LatLng(mylat, mylong));
-
-            mp.title("Current Position");
-
-            mMap.addMarker(mp);
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }*/
 
         // Enable MyLocation Button in the Map
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -241,7 +332,31 @@ public class MainActivity extends AppCompatActivity implements
         mMap.setMyLocationEnabled(true);
 
 
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    marker.showInfoWindow();
 
+                    if(mapPolyLine != null && !marker.getPosition().equals(currPos.getPosition())) {
+                        mapPolyLine.remove();
+                    }
+                    // Checks, whether start and end locations are captured
+                    if (markerPoints.size() >= 1) {
+                        LatLng origin = currPos.getPosition();
+                        LatLng dest = marker.getPosition();
+
+                        // Getting URL to the Google Directions API
+                        String url = getDirectionsUrl(origin, dest);
+
+                        DownloadTask downloadTask = new DownloadTask();
+
+                        // Start downloading json data from Google Directions API
+                        downloadTask.execute(url);
+                    }
+                    //Toast.makeText(getApplicationContext(),"Marker touched",Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
 
 
         // Setting onclick event listener for the map
@@ -251,15 +366,52 @@ public class MainActivity extends AppCompatActivity implements
             public void onMapClick(LatLng point) {
 
                 // Already map contain destination location
-                if (markerPoints.size() > 1) {
+                if (markerPoints.size() >= 1) {
                     clearMap();
                 }
 
-                // draws the marker at the currently touched location
-                drawMarker(point,"Your Destination","");
+                // Creating MarkerOptions
+                MarkerOptions options = new MarkerOptions();
+
+                // Setting the position of the marker
+               options.position(point);
+
+
+                double touchLat=point.latitude;
+                double touchLong=point.longitude;
+
+
+
+                try {
+                    Geocoder geo = new Geocoder(MainActivity.this.getApplicationContext(), Locale.getDefault());
+                    List<Address> addresses = geo.getFromLocation(touchLat,touchLong, 1);
+                    if (addresses.isEmpty()) {
+                        Toast.makeText(getApplicationContext(),"Waiting for Location",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+
+                        if (addresses.size() > 0) {
+                            address =addresses.get(0).getFeatureName()
+                                    + ", " + addresses.get(0).getLocality()
+                                    + ", " + addresses.get(0).getAdminArea()
+                                    + ", " + addresses.get(0).getCountryName();
+                            Toast.makeText(getApplicationContext(), "Touched Address:- " +address, Toast.LENGTH_LONG).show();
+                        }
+
+                        // draws the marker at the currently touched location
+                        drawMarker(point,"Your Destination",address+"");
+
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace(); // getFromLocation() may sometimes fail
+                }
+
+
+
 
                 // Checks, whether start and end locations are captured
-                if (markerPoints.size() >= 2) {
+                if (markerPoints.size() >= 1) {
                     LatLng origin = currPos.getPosition();
                     LatLng dest = markerPoints.get(0);
 
@@ -272,14 +424,45 @@ public class MainActivity extends AppCompatActivity implements
                     downloadTask.execute(url);
                 }
             }
+
+
         });
     }
 
-    protected void clearMap(){
-        markerPoints.clear();
-        mMap.clear();
-        mMap.addMarker(currPos);
-    }
+
+
+   /* private class GeocoderHandler extends Handler {
+        @Override
+        public void handleMessage(Message message) {
+            String locationAddress;
+            switch (message.what) {
+                case 1:
+                    Bundle bundle = message.getData();
+                    locationAddress = bundle.getString("address");
+                    break;
+                default:
+                    locationAddress = null;
+            }
+            location_tf.setText(locationAddress);
+        }
+
+        @Override
+        public void close() {
+
+        }
+
+        @Override
+        public void flush() {
+
+        }
+
+        @Override
+        public void publish(LogRecord record) {
+
+        }
+    }*/
+
+
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
@@ -300,7 +483,8 @@ public class MainActivity extends AppCompatActivity implements
 
         // Building the url to the web service
 
-        return String.format("https://maps.googleapis.com/maps/api/directions/%s?%s", output, parameters);
+        String url="https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+        return  url;
     }
 
     /**
@@ -344,9 +528,180 @@ public class MainActivity extends AppCompatActivity implements
         return data;
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    /**
+     * A class to download data from Google Directions URL
+     */
+    private class DownloadTask extends AsyncTask<String, Void, String> {
+
+        // Downloading data in non-ui thread
+        @Override
+        protected String doInBackground(String... url) {
+
+            // For storing data from web service
+            String data = "";
+
+            try {
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        // Executes in UI thread, after the execution of
+        // doInBackground()
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
+        }
+    }
+
+    /**
+     * A class to parse the Google Directions in JSON format
+     */
+    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        String distance = "";
+        String duration = "";
+        Marker marker;
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                DirectionsJSONParser parser = new DirectionsJSONParser();
+
+                // Starts parsing data
+                routes = parser.parse(jObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points = null;
+            PolylineOptions lineOptions =null;
+            MarkerOptions markerOptions = new MarkerOptions();
+
+
+            if(result.size()<1){
+                Toast.makeText(getBaseContext(), "No Route Found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Traversing through all the routes
+            for (int i = 0; i < result.size(); i++) {
+                points = new ArrayList<LatLng>();
+                lineOptions = new PolylineOptions();
+
+                // Fetching i-th route
+                List<HashMap<String, String>> path = result.get(i);
+
+
+
+                // Fetching all the points in i-th route
+                for (int j = 0; j < path.size();j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    if(j==0){    // Get distance from the list
+                        distance = (String) point.get("distance");
+                        continue;
+                    }else if(j==1){ // Get duration from the list
+                        duration = (String)point.get("duration");
+                        continue;
+                    }
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+                }
+
+                // Adding all the points in the route to LineOptions
+                lineOptions.addAll(points);
+                lineOptions.width(8);
+                lineOptions.color(Color.BLUE);
+
+            }
+
+
+           // Toast.makeText(MainActivity.this,"Distance:"+distance+"  , Duration:"+duration,Toast.LENGTH_SHORT).show();
+
+
+
+            // Drawing polyline in the Google Map for the i-th route
+            mapPolyLine = mMap.addPolyline(lineOptions);
+
+
+
+        }
+    }
+
+   /* protected float calculateMiles() {
+        float totalDistance = 0;
+
+        for(int i = 1; i < markerPoints.size(); i++) {
+            Location currLocation = new Location("this");
+            currLocation.setLatitude(markerPoints.get(i).latitude);
+            currLocation.setLongitude(markerPoints.get(i).longitude);
+
+            Location lastLocation = new Location("this");
+            currLocation.setLatitude(markerPoints.get(i-1).latitude);
+            currLocation.setLongitude(markerPoints.get(i-1).longitude);
+
+            totalDistance += lastLocation.distanceTo(currLocation);
+
+            Toast.makeText(MainActivity.this,""+totalDistance,Toast.LENGTH_LONG).show();
+        }
+
+        return totalDistance;
+
+    }*/
+
+
+    protected void clearMap(){
+        markerPoints.clear();
+        mMap.clear();
+        mMap.addMarker(currPos);
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         createLocationRequest();
+
+
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -364,20 +719,72 @@ public class MainActivity extends AppCompatActivity implements
             mylong = mLastLocation.getLongitude();
         }
 
+
+        try {
+            Geocoder geo = new Geocoder(MainActivity.this.getApplicationContext(), Locale.getDefault());
+            List<Address> addresses = geo.getFromLocation(mylat, mylong, 1);
+            if (addresses.isEmpty()) {
+                Toast.makeText(getApplicationContext(),"Waiting for Location",Toast.LENGTH_SHORT).show();
+            }
+            else {
+
+                    if (addresses.size() > 0) {
+                        address =addresses.get(0).getFeatureName()
+                                + ", " + addresses.get(0).getLocality()
+                                + ", " + addresses.get(0).getAdminArea()
+                                + ", " + addresses.get(0).getCountryName();
+                        Toast.makeText(getApplicationContext(), "Address:- " +address, Toast.LENGTH_LONG).show();
+                    }
+
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace(); // getFromLocation() may sometimes fail
+        }
+
+
         LatLng myPoint = new LatLng(mylat,mylong);
 
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(mylat, mylong))      // Sets the center of the map to location user
+                .zoom(13)                   // Sets the zoom
+                .build();                   // Creates a CameraPosition from the builder
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(myPoint));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
         currPos = new MarkerOptions().title("Your Current Position").position(myPoint)
+                .snippet(address)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
 
         mMap.addMarker(currPos);
 
+
+
+
+
+
         startLocationUpdates();
+
+        if (mLastLocation != null) {
+            // Determine whether a Geocoder is available.
+            if (!Geocoder.isPresent()) {
+                Toast.makeText(this, R.string.no_geocoder_available,
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            /*if (mAddressRequested) {
+                startIntentService();
+            }*/
+        }
+
     }
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setFastestInterval(2000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -395,6 +802,9 @@ public class MainActivity extends AppCompatActivity implements
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 client, mLocationRequest, MainActivity.this);
     }
+
+
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -417,8 +827,9 @@ public class MainActivity extends AppCompatActivity implements
         currPos.position(point);
 
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
     }
 
     @Override
@@ -439,16 +850,16 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
+
+
+        if (markerPoints.size()>=1) {
+            clearMap();
+        }
+
+
+
         int id = item.getItemId();
         String st= (String) item.getTitle();
-
-
-        // Handle navigation view item clicks here.
-
-        //spinner.setVisibility(View.VISIBLE);
-
-
-
 
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(true);
@@ -460,9 +871,11 @@ public class MainActivity extends AppCompatActivity implements
         progressBarStatus = 0;
 
 
-        if (markerPoints.size()>1) {
-            clearMap();
-        }
+
+
+
+
+        // Handle navigation view item clicks here.
 
         if(id==R.id.home){
 
@@ -509,102 +922,12 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
+
+
     }
 
-    /**
-     * A class to download data from Google Directions URL
-     */
-    private class DownloadTask extends AsyncTask<String, Void, String> {
 
-        // Downloading data in non-ui thread
-        @Override
-        protected String doInBackground(String... url) {
-
-            // For storing data from web service
-            String data = "";
-
-            try {
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        // Executes in UI thread, after the execution of
-        // doInBackground()
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-            // Invokes the thread for parsing the JSON data
-            parserTask.execute(result);
-        }
-    }
-
-    /**
-     * A class to parse the Google Directions in JSON format
-     */
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
-
-            try {
-                jObject = new JSONObject(jsonData[0]);
-                DirectionsJSONParser parser = new DirectionsJSONParser();
-
-                // Starts parsing data
-                routes = parser.parse(jObject);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        // Executes in UI thread, after the parsing process
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList<LatLng> points = null;
-            PolylineOptions lineOptions =null;
-
-            // Traversing through all the routes
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList<LatLng>();
-                lineOptions = new PolylineOptions();
-
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
-
-                // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
-                }
-
-                // Adding all the points in the route to LineOptions
-                lineOptions.addAll(points);
-                lineOptions.width(7);
-                lineOptions.color(Color.BLUE);
-
-            }
-
-            // Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions);
-        }
-    }
 
 
     private void drawMarker(LatLng point, String name, String address){
@@ -620,6 +943,11 @@ public class MainActivity extends AppCompatActivity implements
 
         // Add new marker to the Google Map Android API V2
         mMap.addMarker(options);
+
+        MainActivity.this.mMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+
+
+
     }
 
     //-------change of view of map(sattelite,normal).
@@ -641,7 +969,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_OK && resultCode == RESULT_OK) {
             ArrayList<String> thingsYouSaid = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            ((TextView) findViewById(R.id.TFaddress)).setText(thingsYouSaid.get(0));
+            location_tf.setText(thingsYouSaid.get(0));
         }
     }
 
@@ -661,15 +989,42 @@ public class MainActivity extends AppCompatActivity implements
 
     public void onSearch1(View view) throws IllegalArgumentException {
 
+        new CountDownTimer(5000,1000){
 
 
-        final EditText location_tf = (EditText) findViewById(R.id.TFaddress);
-        String location = location_tf.getText().toString().toLowerCase();
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                progressBar.dismiss();
+                //Toast.makeText(getApplication(),"No Places Found",Toast.LENGTH_SHORT).show();
+
+            }
+        }.start();
+
+
+
+         String location = location_tf.getText().toString().toLowerCase();
+
+        String id=location;
+
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Searching for "+id);
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setProgress(0);
+        progressBar.setMax(100);
+        progressBar.show();
+        progressBarStatus = 0;
 
         if (TextUtils.isEmpty(location)) {
-            location_tf.setError("Please Enter a Place to search");
+            progressBar.dismiss();
+            Toast.makeText(getApplicationContext(),"Please Enter Something to Search",Toast.LENGTH_SHORT).show();
             return;
-        } else if (TextUtils.isEmpty(location)) ;
+        }
 
         clearMap();
 
@@ -727,44 +1082,46 @@ public class MainActivity extends AppCompatActivity implements
                         e.printStackTrace();
                     }
 
-                    for (int i = 0; i < addressList.size(); ++i) {
-
+                    boolean flag=false;
+                    for (int i = 0; i < addressList.size(); i++) {
 
                         MarkerOptions markerOptions = new MarkerOptions();
-                        android.location.Address address = addressList.get(i);
+                        Address address = addressList.get(i);
                         double lat = Double.parseDouble(String.valueOf((address.getLatitude())));
                         double lng = Double.parseDouble(String.valueOf((address.getLongitude())));
                         //String name = (String)hmPlace.get("formatted_address");
 
 
                         LatLng latLng = new LatLng(lat, lng);
-                        markerOptions.position(latLng);
+                        /*markerOptions.position(latLng);
                         markerOptions.title(address.getAddressLine(0));
-                        MainActivity.this.mMap.addMarker(markerOptions);
-                        // progressBar.dismiss();
+                        markerOptions.snippet(address.getFeatureName()+","+address.getLocality()+","+address.getAdminArea());
+                        MainActivity.this.mMap.addMarker(markerOptions);*/
+                        drawMarker(latLng,address.getAddressLine(0),
+                                address.getFeatureName()+","+address.getLocality()+","+address.getAdminArea());
+                        progressBar.dismiss();
+
+                        if(address.getAddressLine(0).toLowerCase().contains(location.toLowerCase())){
+                            flag = true;
+                        }
+
                         if (i == 0) {
                             MainActivity.this.mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
                         }
 
-               /* progressBar = new ProgressDialog(this);
-                progressBar.setCancelable(true);
-                progressBar.setMessage("Searching for "+id);
-                progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressBar.setProgress(0);
-                progressBar.setMax(100);
-                progressBar.show();
-                progressBarStatus = 0;*/
-
-
+                    }
+                    if(!flag){
+                        progressBar.dismiss();
+                        Toast.makeText(getApplicationContext(),"No Places Found",Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
                     Toast.makeText(MainActivity.this.getBaseContext(), "No Place is entered", Toast.LENGTH_SHORT).show();
                 }
+
             }
         }
-
     }
 
 
@@ -807,131 +1164,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
-/*
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Getting Current Location From GPS
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return true;
-        }
-        Location location = locationManager.getLastKnownLocation(provider);
-
-
-        LatLng myPoint=new LatLng(location.getLatitude(), location.getLongitude());
-
-        int id = item.getItemId();
-        String st= (String) item.getTitle();
-
-
-        // Handle navigation view item clicks here.
-
-
-        mMap.clear();
-        //clearVisible();
-        markersLoaded=false;
-
-        //spinner.setVisibility(View.VISIBLE);
-
-
-
-
-        progressBar = new ProgressDialog(this);
-        progressBar.setCancelable(true);
-        progressBar.setMessage("Loading "+st);
-        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressBar.setProgress(0);
-        progressBar.setMax(100);
-        progressBar.show();
-        progressBarStatus = 0;
-
-
-        if (markerPoints.size()>1) {
-            mMap.clear();
-            markers.clear();
-        }
-
-        mMap.addMarker(new MarkerOptions().title("Your Current Position")
-                .position(myPoint).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-        if(id==R.id.home){
-
-            // Restart the Activity
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
-
-            spinner.setVisibility(View.INVISIBLE);
-
-
-        }
-
-        String url="http://chennaiessentials.co.in/getMarkers.php?lat="+myPoint.latitude+"&long="+myPoint.longitude;
-        switch (id) {
-            case R.id.atm:
-                //Request data
-                typeSelected = "atm";
-                new JSONTask().execute(url + "&q=atm");
-                break;
-            case R.id.bank:
-                typeSelected = "banks";
-                new JSONTask().execute(url + "&q=banks");
-                break;
-            case R.id.fire:
-                typeSelected = "fire";
-                new JSONTask().execute(url + "&q=fire");
-                break;
-            case R.id.hospitals:
-                typeSelected = "hospital";
-                new JSONTask().execute(url + "&q=hospital");
-                break;
-            case R.id.police:
-                typeSelected = "police";
-                new JSONTask().execute(url + "&q=police");
-                break;
-            case R.id.post:
-                typeSelected = "postoffice";
-                new JSONTask().execute(url + "&q=postoffice");
-                break;
-            case R.id.college:
-                typeSelected = "colleges";
-                new JSONTask().execute(url + "&q=colleges");
-                break;
-            case R.id.school:
-                typeSelected = "schools";
-                new JSONTask().execute(url + "&q=schools");
-                break;
-            case R.id.theater:
-                typeSelected = "theatre";
-                new JSONTask().execute(url + "&q=theater");
-                break;
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-
-
-
-    }
-*/
-
 
 
     private class JSONTask extends AsyncTask<String, String, String> {
@@ -1051,10 +1283,13 @@ public class MainActivity extends AppCompatActivity implements
 
             }
             //spinner.setVisibility(View.GONE);
-           // progressBar.dismiss();
+           progressBar.dismiss();
+
 
         }
     }
+
+
 
     /*
 
@@ -1081,7 +1316,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onStart() {
-        super.onStart();
+
+        client.connect();
 
         LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
@@ -1099,34 +1335,32 @@ public class MainActivity extends AppCompatActivity implements
 
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage("AIPLANE Mode Is On");
-            dialog.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            dialog.setMessage("Airplane Mode Is Enabled");
+            dialog.setPositiveButton("Disable it!", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     // TODO Auto-generated method stub
-                    Intent myIntent = new Intent( Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                    Intent myIntent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
                     startActivity(myIntent);
                     //get gps
                 }
             });
-            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+           /* dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     // TODO Auto-generated method stub
 
                 }
-            });
+            });*/
             AlertDialog alert = dialog.create();
             alert.show();
 
-        }else
-
-        if (!gps_enabled) {
+        } else if (!gps_enabled) {
             // notify user
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setMessage("GPS Location Is Disabled");
-            dialog.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            dialog.setPositiveButton("Enable it!", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     // TODO Auto-generated method stub
@@ -1135,25 +1369,25 @@ public class MainActivity extends AppCompatActivity implements
                     //get gps
                 }
             });
-            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            /*dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     // TODO Auto-generated method stub
 
                 }
-            });
+            });*/
             dialog.show();
-        }  else
+        } else
 
             // Call isNetworkAvailable class
             if (!isNetworkAvailable()) {
                 // Create an Alert Dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 // Set the Alert Dialog Message
-                builder.setMessage("Oops! Internet Connection Required")
+                builder.setMessage("Internet Connection Required")
                         .setCancelable(false)
-                        .setPositiveButton("Retry",
+                        .setPositiveButton("Access Internet ",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                                         // TODO Auto-generated method stub
@@ -1176,7 +1410,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        /*client.connect();
+
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Main Page", // TODO: Define a title for the content shown.
@@ -1187,13 +1421,19 @@ public class MainActivity extends AppCompatActivity implements
                 // TODO: Make sure this auto-generated app deep link URI is correct.
                 Uri.parse("android-app://com.example.ankitkumar.lbsee/http/host/path")
         );
-        AppIndex.AppIndexApi.start(client, viewAction);*/
+        //AppIndex.AppIndexApi.start(client, viewAction);
 
+        super.onStart();
+
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
     public void onStop() {
-        super.onStop();
+
 
         /// ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -1209,6 +1449,9 @@ public class MainActivity extends AppCompatActivity implements
         );
         //AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
+// See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
     }
 
 
@@ -1245,7 +1488,7 @@ public class MainActivity extends AppCompatActivity implements
             return mPosition;
         }
 
-        String getSnippet() {
+        public String getSnippet() {
             return Snippet;
         }
 
@@ -1289,6 +1532,8 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    private class AddressResultReceiver {
+    }
 }
 
 
