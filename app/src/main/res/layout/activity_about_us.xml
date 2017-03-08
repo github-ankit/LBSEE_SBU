@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.example.ankitkumar.lbsee_sbu.about_us">
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
+
+            <TextView
+                android:id="@+id/About_Us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="About Us"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:fontFamily="cursive" />
+
+            <ImageView
+                android:id="@+id/lbsee"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_below="@id/About_Us"
+                android:src="@drawable/iconn" />
+
+            <TextView
+                android:id="@+id/about_us_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_below="@id/lbsee"
+                android:textAlignment="viewStart"
+                android:text="@string/About_us_content"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/our_team"
+                android:text="Our Team"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"
+                android:layout_below="@id/about_us_content"
+                android:paddingTop="15sp"
+                android:fontFamily="cursive"/>
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="100sp"
+                android:id="@+id/img_sashi"
+                android:paddingTop="15sp"
+                android:layout_below="@id/our_team"
+                android:src="@drawable/t_sasipraba"
+                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_sashi"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@id/img_sashi"
+                android:layout_below="@id/our_team"
+                android:paddingTop="30sp"
+                android:text="Dr. T.Sasiprabha\nPrincipal Investigator\n -Pro Vice Chancellor\n Sathyabama University,Chennai"/>
+
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="100sp"
+                android:id="@+id/img_jeb"
+                android:paddingTop="15sp"
+                android:layout_below="@id/img_sashi"
+                android:src="@drawable/jeberson"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_jeb"
+                android:layout_toRightOf="@id/img_jeb"
+                android:layout_below="@id/img_sashi"
+                android:textColor="@android:color/white"
+                android:paddingTop="30sp"
+                android:text="Dr. Jeberson Retna Raj R\nCo-Investigator\n-Associate Prof.\nSathyabama University"/>
+
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="100sp"
+                android:id="@+id/img_sarkar"
+                android:paddingTop="15sp"
+                android:layout_below="@id/img_jeb"
+                android:src="@drawable/sarkar"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_sarkar"
+                android:layout_toRightOf="@id/img_sarkar"
+                android:layout_below="@id/img_jeb"
+                android:textColor="@android:color/white"
+                android:paddingTop="40sp"
+                android:text="Ankit Kumar\nAndroid Developer"/>
+
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="100sp"
+                android:id="@+id/img_farhaan"
+                android:paddingTop="15sp"
+                android:layout_below="@id/img_sarkar"
+                android:src="@drawable/farhaan"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_farhaan"
+                android:layout_toRightOf="@id/img_farhaan"
+                android:layout_below="@id/img_sarkar"
+                android:textColor="@android:color/white"
+                android:paddingTop="40sp"
+                android:text="Farhaan\nAndroid Developer"/>
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="100sp"
+                android:id="@+id/img_banku"
+                android:paddingTop="15sp"
+                android:layout_below="@id/img_farhaan"
+                android:src="@drawable/bankuu"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_banku"
+                android:layout_toRightOf="@id/img_banku"
+                android:layout_below="@id/img_farhaan"
+                android:textColor="@android:color/white"
+                android:paddingTop="40sp"
+                android:text="Suryanaryan B.\nWeb Developer"/>
+
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="100sp"
+                android:id="@+id/img_teja"
+                android:paddingTop="15sp"
+                android:layout_below="@id/img_banku"
+                android:src="@drawable/teja"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_teja"
+                android:layout_toRightOf="@id/img_teja"
+                android:layout_below="@id/img_banku"
+                android:textColor="@android:color/white"
+                android:paddingTop="40sp"
+                android:text="Polina Sundeep Teja\nWeb Developer"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/copyrigh_sbu"
+                android:text="©-Sathyabama University"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:layout_below="@id/img_teja"
+                android:paddingTop="20sp"
+                android:paddingLeft="50sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/version"
+                android:layout_below="@id/copyrigh_sbu"
+                android:text="Version "
+                android:textColor="@android:color/white"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="20sp"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ver"
+                android:textSize="22sp"
+                android:paddingTop="20sp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/copyrigh_sbu"
+                android:layout_toRightOf="@id/version"
+                />
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+
+
+</LinearLayout>
+

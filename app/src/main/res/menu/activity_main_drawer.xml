@@ -69,8 +69,18 @@
 
         </item>
 
-        <item android:title="About LBSEE"
-            android:id="@+id/about"/>
+        <item android:title="Info">
+
+            <menu>
+                <item android:title="WEB VERSION"
+                    android:id="@+id/web"/>
+
+                <item android:title="About LBSEE"
+                    android:id="@+id/about"/>
+            </menu>
+        </item>
+
+
     </group>
 
 </menu>

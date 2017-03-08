@@ -1,7 +1,6 @@
 package com.example.ankitkumar.lbsee_sbu;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -49,14 +48,19 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -69,8 +73,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.nearby.messages.Message;
-import com.google.android.gms.vision.barcode.Barcode;
 import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -88,14 +90,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Time;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -127,11 +125,15 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
+
+
     EditText location_tf;
 
     TextView distdur;
 
     MarkerOptions currPos = null;
+
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
 
     ArrayList<LatLng> markerPoints;
@@ -151,6 +153,22 @@ public class MainActivity extends AppCompatActivity implements
 
         TextInputLayout ttf = (TextInputLayout) findViewById(R.id.TFaddress);
         location_tf = ttf.getEditText();
+        ttf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                    .build(MainActivity.this);
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO: Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO: Handle the error.
+                }
+
+            }
+        });
 
         // Getting Google Play availability status
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
@@ -166,6 +184,8 @@ public class MainActivity extends AppCompatActivity implements
                     .addOnConnectionFailedListener(this)
                     .addApi(AppIndex.API).build();
         }
+
+
 
 
         if (client != null) {
@@ -251,8 +271,6 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra(FetchAddressIntentService.Constants.LOCATION_DATA_EXTRA, mLastLocation);
         startService(intent);
     }
-
-
 
 
     private class ReverseGeocodingTask extends AsyncTask<Double, Void, String> {
@@ -354,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements
                         downloadTask.execute(url);
                     }
                     //Toast.makeText(getApplicationContext(),"Marker touched",Toast.LENGTH_SHORT).show();
-                    return true;
+                    return false;
                 }
             });
 
@@ -392,7 +410,9 @@ public class MainActivity extends AppCompatActivity implements
 
                         if (addresses.size() > 0) {
                             address =addresses.get(0).getFeatureName()
+                                    + ", " + addresses.get(0).getSubLocality()
                                     + ", " + addresses.get(0).getLocality()
+                                    + ", " + addresses.get(0).getSubAdminArea()
                                     + ", " + addresses.get(0).getAdminArea()
                                     + ", " + addresses.get(0).getCountryName();
                             Toast.makeText(getApplicationContext(), "Touched Address:- " +address, Toast.LENGTH_LONG).show();
@@ -730,10 +750,11 @@ public class MainActivity extends AppCompatActivity implements
 
                     if (addresses.size() > 0) {
                         address =addresses.get(0).getFeatureName()
+                                + ", " + addresses.get(0).getSubLocality()
                                 + ", " + addresses.get(0).getLocality()
                                 + ", " + addresses.get(0).getAdminArea()
                                 + ", " + addresses.get(0).getCountryName();
-                        Toast.makeText(getApplicationContext(), "Address:- " +address, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Current Address:- " +address, Toast.LENGTH_LONG).show();
                     }
 
             }
@@ -919,6 +940,23 @@ public class MainActivity extends AppCompatActivity implements
             new JSONTask().execute(url + "&q=theater");
         }
 
+        if(id==R.id.web){
+
+            Intent i=new Intent(MainActivity.this,WebSiteView.class);
+            startActivity(i);
+            progressBar.dismiss();
+
+
+        }
+
+        if(id==R.id.about){
+            progressBar.dismiss();
+            Intent i=new Intent(MainActivity.this,About_Us.class);
+            startActivity(i);
+
+
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -970,6 +1008,18 @@ public class MainActivity extends AppCompatActivity implements
         if (requestCode == REQUEST_OK && resultCode == RESULT_OK) {
             ArrayList<String> thingsYouSaid = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             location_tf.setText(thingsYouSaid.get(0));
+        }
+        else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Toast.makeText(getBaseContext(),"Place: " + place.getName(),Toast.LENGTH_SHORT).show();
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                Toast.makeText(getBaseContext(),status.getStatusMessage(),Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
         }
     }
 

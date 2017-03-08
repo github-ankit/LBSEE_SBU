@@ -7,26 +7,23 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-
-
-
-
-    <receiver android:enabled="true" android:name=".ConnectivityReceiver">
+    <receiver
+        android:name=".ConnectivityReceiver"
+        android:enabled="true">
         <intent-filter>
-            <action android:name="android.intent.action.AIRPLANE_MODE"/>
+            <action android:name="android.intent.action.AIRPLANE_MODE" />
         </intent-filter>
     </receiver>
 
-    <multidexApplication
-        android:name="android.support.multidex.MultiDexApplication"/>
+    <multidexApplication android:name="android.support.multidex.MultiDexApplication" />
 
     <supports-screens android:xlargeScreens="true" />
     <supports-screens android:compatibleWidthLimitDp="320" />
@@ -38,15 +35,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
 
-       <!-- <service
+        <!--
+            <service
             android:name=".FetchAddressIntentService"
-            android:exported="false"/>-->
+            android:exported="false"/>
+        -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Splash"
             android:theme="@style/AppTheme.NoActionBar">
@@ -70,11 +67,18 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:label="@string/title_activity_maps" />
+
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".About_Us" />
+        <activity android:name=".WebSiteView"></activity>
     </application>
 
 </manifest>
